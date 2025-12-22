@@ -4,6 +4,9 @@
   ~ SPDX-License-Identifier: MIT
   ~
   -->
+## 1.6.0 (2025-12-22)
+- feat(): add param 'missing' to group by agg
+
 ## 1.5.0 (2025-11-03)
 * feat(): link dashboard to a folder by @KarimGl in https://github.com/Enedis-OSS/grafana-dsl/pull/3
 
