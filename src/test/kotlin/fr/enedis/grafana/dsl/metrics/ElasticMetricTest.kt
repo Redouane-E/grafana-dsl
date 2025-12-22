@@ -44,7 +44,8 @@ class ElasticMetricTest {
 
         // then
         metrics.count().shouldBeEqualTo(3)
-        metrics[0].toJson().toString().shouldEqualToJson("""
+        metrics[0].toJson().toString().shouldEqualToJson(
+            """
             {
                 "id":"1",
                 "type":"max",
@@ -53,8 +54,10 @@ class ElasticMetricTest {
                 "hide":true,
                 "meta":{}
             }
-         """)
-        metrics[1].toJson().toString().shouldEqualToJson("""
+         """
+        )
+        metrics[1].toJson().toString().shouldEqualToJson(
+            """
             {
                 "id":"2",
                 "type":"derivative",
@@ -63,8 +66,10 @@ class ElasticMetricTest {
                 "hide":true,
                 "meta":{}
             }
-        """)
-        metrics[2].toJson().toString().shouldEqualToJson("""
+        """
+        )
+        metrics[2].toJson().toString().shouldEqualToJson(
+            """
             {
                 "id":"3",
                 "type":"bucket_script",
@@ -80,6 +85,40 @@ class ElasticMetricTest {
                 ],
                 "meta":{}
             }
-        """)
+        """
+        )
+    }
+
+    @Test
+    fun `Elastic metrics should be able to render group by missing param`() {
+        // given
+        val elasticMetricBuilder = ElasticMetric.Builder.Metric()
+
+        val groupBy = elasticMetricBuilder.groupBys {
+            terms("meta.my_meta") {
+                size = "0"
+                orderBy = "_term"
+                order = "asc"
+                missing = "N/A"
+            }
+        }
+
+        // then
+        groupBy[0].toJson().toString().shouldEqualToJson(
+            """
+            {
+                "id":"1",
+                "field":"meta.my_meta",
+                "type":"terms",
+                "settings":{
+                    "min_doc_count": "1",
+                    "order": "asc",
+                    "orderBy": "_term",
+                    "size": "0",
+                    "missing": "N/A"
+                }
+            }
+         """
+        )
     }
 }

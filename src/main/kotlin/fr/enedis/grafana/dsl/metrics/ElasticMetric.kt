@@ -275,8 +275,17 @@ abstract class ElasticSettingsBuilder {
         var size: String? = "10"
         var order: String? = "desc"
         var orderBy: String? = "_term"
+        var missing: String? = null
 
-        override fun createElasticSettings() = ElasticSettings(min_doc_count, order, orderBy, size, null, null)
+        override fun createElasticSettings() = ElasticSettings(
+            min_doc_count = min_doc_count,
+            order = order,
+            orderBy = orderBy,
+            size = size,
+            trimEdges = null,
+            interval = null,
+            missing = missing
+        )
     }
 
     class BucketScriptElasticSettings : ElasticSettingsBuilder() {
@@ -298,6 +307,7 @@ class ElasticSettings constructor(
     private val interval: Duration? = null,
     private val timezone: String? = null,
     private val script: String? = null,
+    private val missing: String? = null
 
 ) : Json<JSONObject> {
     override fun toJson(): JSONObject {
@@ -310,6 +320,7 @@ class ElasticSettings constructor(
             "interval" to interval
             "timezone" to timezone
             "script" to script
+            "missing" to missing
         }
     }
 }
